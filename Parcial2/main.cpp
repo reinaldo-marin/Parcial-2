@@ -7,28 +7,36 @@ using namespace std;
 
 vector<int> llenar (int inix, int iniy, int endx, int endy)
 {
-    string filename = "../AppImagenes/images/imagen.jpg";
+    string filename = "imagen.jpg";
     QImage im(filename.c_str() );
     QImage img2 = im.scaled(700, 500, Qt::KeepAspectRatio);
     Cuadrito *cuadrito;
     Inventario miInventario;
-    vector<int> prom;
+    vector<int> prom = {0,0,0};
     int contador = 0;
-    for(inix;inix<=endx;inix++)
+    int aumento = iniy;
+    for(inix;inix<endx;inix++)
     {
-        for(iniy;iniy<=endy;iniy++)
+        for(iniy;iniy<endy;iniy++)
         {
             cuadrito = new Cuadrito(contador,im.pixelColor(inix,iniy).red(),im.pixelColor(inix,iniy).green(),im.pixelColor(inix,iniy).blue());
             if(miInventario.AgregarCuadrito(cuadrito))
             {
-                cout<<"Cargando imagen..."<<endl;
+                cout<<""<<endl;
+            }
+            else
+            {
+                cout<<"Error"<<endl;
             }
             contador++;
         }
+        iniy = aumento;
     }
     int i, repite = 1, mayorRepite = -999;
-    for(i=0; i<miInventario.ContarCuadritoes();i++)
+    cout<<"tamano:"<<miInventario.ContarCuadritoes()-1<<endl;
+    for(i=0; i<miInventario.ContarCuadritoes()-1;i++)
     {
+        cout<<"i:"<<i<<endl;
         if(miInventario.getCuadritos()[i]->getred()==miInventario.getCuadritos()[i+1]->getred() and miInventario.getCuadritos()[i]->getgreen()==miInventario.getCuadritos()[i+1]->getgreen() and miInventario.getCuadritos()[i]->getblue()==miInventario.getCuadritos()[i+1]->getblue())
         {
           repite++;
@@ -77,7 +85,7 @@ int main()
     for(int i = 0; i<=5;i++)
     {
        archivo<<"  leds"<<i<<".begin();"<<endl;
-       for (int z = 1; z<=12;z+=2)
+       for (int z = 1; z<=13;z+=2)
        {
          archivo<<"  for (int i ="<<z<<"; i < "<<z+2<<"; i++)"<<endl;
          archivo<<"  {"<<endl;
@@ -85,12 +93,15 @@ int main()
          archivo<<"   leds.setPixelColor(i,"<<prom[0]<<","<<prom[1]<<","<<prom[2]<<");"<<endl;
          archivo<<"  }"<<endl;
          archivo<<"  leds"<<i<<".show();"<<endl;
+         inix += 100;
+         endx += 100;
        }
+       iniy += 100;
+       endy += 100;
 
     }
-    vector<int> square = llenar (0, 0, 100, 100);
-    archivo << "cuph";
-    archivo << endl;
+    archivo<<"}"<<endl;
+    archivo<<"void loop(){}"<<endl;
 
 
     return 0;
