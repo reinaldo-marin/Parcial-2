@@ -19,10 +19,10 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
     {
         for(iniy;iniy<endy;iniy++)
         {
-            cuadrito = new Cuadrito(contador,im.pixelColor(inix,iniy).red(),im.pixelColor(inix,iniy).green(),im.pixelColor(inix,iniy).blue());
+            cuadrito = new Cuadrito(contador,img2.pixelColor(inix,iniy).red(),img2.pixelColor(inix,iniy).green(),img2.pixelColor(inix,iniy).blue());
             if(miInventario.AgregarCuadrito(cuadrito))
             {
-                cout<<""<<endl;
+                cout<<"";
             }
             else
             {
@@ -33,10 +33,9 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
         iniy = aumento;
     }
     int i, repite = 1, mayorRepite = -999;
-    cout<<"tamano:"<<miInventario.ContarCuadritoes()-1<<endl;
+    cout<<"tamano:"<<miInventario.ContarCuadritoes()<<endl;
     for(i=0; i<miInventario.ContarCuadritoes()-1;i++)
     {
-        cout<<"i:"<<i<<endl;
         if(miInventario.getCuadritos()[i]->getred()==miInventario.getCuadritos()[i+1]->getred() and miInventario.getCuadritos()[i]->getgreen()==miInventario.getCuadritos()[i+1]->getgreen() and miInventario.getCuadritos()[i]->getblue()==miInventario.getCuadritos()[i+1]->getblue())
         {
           repite++;
@@ -82,22 +81,44 @@ int main()
     archivo<<"Adafruit_NeoPixel leds5 (15,6,NEO_GRB + NEO_KHZ800);"<<endl;
     archivo<<"void setup();"<<endl;
     archivo<<"{"<<endl;
-    for(int i = 0; i<=5;i++)
+    for(int i = 0; i<=4;i++)
     {
        archivo<<"  leds"<<i<<".begin();"<<endl;
-       for (int z = 1; z<=13;z+=2)
+       for (int z = 1; z<=11;z+=2)
        {
          archivo<<"  for (int i ="<<z<<"; i < "<<z+2<<"; i++)"<<endl;
          archivo<<"  {"<<endl;
+         cout<<"endx:"<<endx<<endl;
+         cout<<"endy:"<<endy<<endl;
          prom = llenar (inix,iniy,endx,endy);
-         archivo<<"   leds.setPixelColor(i,"<<prom[0]<<","<<prom[1]<<","<<prom[2]<<");"<<endl;
+         archivo<<"   leds"<<i<<".setPixelColor(i,"<<prom[0]<<","<<prom[1]<<","<<prom[2]<<");"<<endl;
          archivo<<"  }"<<endl;
          archivo<<"  leds"<<i<<".show();"<<endl;
-         inix += 100;
-         endx += 100;
+         if(endx<700)
+         {
+             inix += 100;
+             endx += 100;
+
+         }
+         else
+         {
+             break;
+         }
+
        }
-       iniy += 100;
-       endy += 100;
+       inix = 0;
+       endx = 100;
+       if(endy<=500 and iniy <=400)
+       {
+           iniy += 100;
+           endy += 100;
+
+       }
+       else
+       {
+           break;
+       }
+
 
     }
     archivo<<"}"<<endl;
