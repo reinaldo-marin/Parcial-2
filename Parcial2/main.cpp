@@ -9,7 +9,7 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
 {
     string filename = "imagen.jpg";
     QImage im(filename.c_str() );
-    QImage img2 = im.scaled(700, 500, Qt::KeepAspectRatio);
+    QImage img2 = im.scaled(700, 600);
     Cuadrito *cuadrito;
     Inventario miInventario;
     vector<int> prom = {0,0,0};
@@ -19,7 +19,22 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
     {
         for(iniy;iniy<endy;iniy++)
         {
-            cuadrito = new Cuadrito(contador,img2.pixelColor(inix,iniy).red(),img2.pixelColor(inix,iniy).green(),img2.pixelColor(inix,iniy).blue());
+            int red = img2.pixelColor(inix,iniy).red();
+            int green = img2.pixelColor(inix,iniy).green();
+            int blue = img2.pixelColor(inix,iniy).blue();
+            if(img2.pixelColor(inix,iniy).red() == 255)
+            {
+                red = 254;
+            }
+            if(img2.pixelColor(inix,iniy).green() == 255)
+            {
+                green = 254;
+            }
+            if(img2.pixelColor(inix,iniy).blue() == 255)
+            {
+                blue = 254;
+            }
+            cuadrito = new Cuadrito(contador,red,green,blue);
             if(miInventario.AgregarCuadrito(cuadrito))
             {
                 cout<<"";
@@ -45,9 +60,31 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
             if (repite > mayorRepite)
             {
                 mayorRepite = repite;
-                prom[0] = miInventario.getCuadritos()[i]->getred();
-                prom[1] = miInventario.getCuadritos()[i]->getgreen();
-                prom[2] = miInventario.getCuadritos()[i]->getblue();
+                if (miInventario.getCuadritos()[i]->getred() == 255)
+                {
+                   prom[0] = 254;
+                }
+                else
+                {
+                    prom[0] = miInventario.getCuadritos()[i]->getred();
+                }
+                if (miInventario.getCuadritos()[i]->getgreen() == 255)
+                {
+                   prom[1] = 254;
+                }
+                else
+                {
+                    prom[1] = miInventario.getCuadritos()[i]->getgreen();
+                }
+                if (miInventario.getCuadritos()[i]->getblue() == 255)
+                {
+                   prom[2] = 254;
+                }
+                else
+                {
+                    prom[2] = miInventario.getCuadritos()[i]->getblue();
+                }
+
             }
             repite = 1;
         }
@@ -73,18 +110,21 @@ int main()
     int endy = 100;
     // Abrimos el archivo
     archivo.open(nombreArchivo.c_str(), fstream::out);
-    archivo << "#include <Adafruit_NeoPixel.h"<<endl;
+    archivo << "// C++ code"<<endl;
+    archivo << "//"<<endl;
+    archivo << "#include <Adafruit_NeoPixel.h>"<<endl;
     archivo<<"Adafruit_NeoPixel leds0 (15,2,NEO_GRB + NEO_KHZ800);"<<endl;
-    archivo<<"Adafruit_NeoPixel leds2 (15,3,NEO_GRB + NEO_KHZ800);"<<endl;
-    archivo<<"Adafruit_NeoPixel leds3 (15,4,NEO_GRB + NEO_KHZ800);"<<endl;
-    archivo<<"Adafruit_NeoPixel leds4 (15,5,NEO_GRB + NEO_KHZ800);"<<endl;
-    archivo<<"Adafruit_NeoPixel leds5 (15,6,NEO_GRB + NEO_KHZ800);"<<endl;
-    archivo<<"void setup();"<<endl;
+    archivo<<"Adafruit_NeoPixel leds1 (15,3,NEO_GRB + NEO_KHZ800);"<<endl;
+    archivo<<"Adafruit_NeoPixel leds2 (15,4,NEO_GRB + NEO_KHZ800);"<<endl;
+    archivo<<"Adafruit_NeoPixel leds3 (15,5,NEO_GRB + NEO_KHZ800);"<<endl;
+    archivo<<"Adafruit_NeoPixel leds4 (15,6,NEO_GRB + NEO_KHZ800);"<<endl;
+    archivo<<"Adafruit_NeoPixel leds5 (15,7,NEO_GRB + NEO_KHZ800);"<<endl;
+    archivo<<"void setup()"<<endl;
     archivo<<"{"<<endl;
-    for(int i = 0; i<=4;i++)
+    for(int i = 0; i<=5;i++)
     {
        archivo<<"  leds"<<i<<".begin();"<<endl;
-       for (int z = 1; z<=11;z+=2)
+       for (int z = 1; z<=13;z+=2)
        {
          archivo<<"  for (int i ="<<z<<"; i < "<<z+2<<"; i++)"<<endl;
          archivo<<"  {"<<endl;
@@ -108,7 +148,7 @@ int main()
        }
        inix = 0;
        endx = 100;
-       if(endy<=500 and iniy <=400)
+       if(endy<=600 and iniy <=500)
        {
            iniy += 100;
            endy += 100;
