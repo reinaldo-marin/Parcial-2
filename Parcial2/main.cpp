@@ -9,7 +9,6 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
 {
     string filename = "imagen.jpg";
     QImage im(filename.c_str() );
-    QImage img2 = im.scaled(700, 600);
     Cuadrito *cuadrito;
     Inventario miInventario;
     vector<int> prom = {0,0,0};
@@ -19,18 +18,18 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
     {
         for(iniy;iniy<endy;iniy++)
         {
-            int red = img2.pixelColor(inix,iniy).red();
-            int green = img2.pixelColor(inix,iniy).green();
-            int blue = img2.pixelColor(inix,iniy).blue();
-            if(img2.pixelColor(inix,iniy).red() == 255)
+            int red = im.pixelColor(inix,iniy).red();
+            int green = im.pixelColor(inix,iniy).green();
+            int blue = im.pixelColor(inix,iniy).blue();
+            if(im.pixelColor(inix,iniy).red() == 255)
             {
                 red = 254;
             }
-            if(img2.pixelColor(inix,iniy).green() == 255)
+            if(im.pixelColor(inix,iniy).green() == 255)
             {
                 green = 254;
             }
-            if(img2.pixelColor(inix,iniy).blue() == 255)
+            if(im.pixelColor(inix,iniy).blue() == 255)
             {
                 blue = 254;
             }
@@ -48,7 +47,7 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
         iniy = aumento;
     }
     int i, repite = 1, mayorRepite = -999;
-    cout<<"tamano:"<<miInventario.ContarCuadritoes()<<endl;
+    cout<<"Procesando imagen..."<<endl;
     for(i=0; i<miInventario.ContarCuadritoes()-1;i++)
     {
         if(miInventario.getCuadritos()[i]->getred()==miInventario.getCuadritos()[i+1]->getred() and miInventario.getCuadritos()[i]->getgreen()==miInventario.getCuadritos()[i+1]->getgreen() and miInventario.getCuadritos()[i]->getblue()==miInventario.getCuadritos()[i+1]->getblue())
@@ -102,12 +101,18 @@ vector<int> llenar (int inix, int iniy, int endx, int endy)
 int main()
 {
     vector<int> prom;
+    string filename = "imagen.jpg";
+    QImage im(filename.c_str() );
+    QSize tamano = im.size();
+    int h = tamano.height();
+    int w = tamano.width();
     string nombreArchivo = "ordenes.txt";
     ofstream archivo;
     int inix = 0;
     int iniy = 0;
-    int endx = 100;
-    int endy = 100;
+    int endx = w/7;
+    int endy = h/6;
+
     // Abrimos el archivo
     archivo.open(nombreArchivo.c_str(), fstream::out);
     archivo << "// C++ code"<<endl;
@@ -128,17 +133,14 @@ int main()
        {
          archivo<<"  for (int i ="<<z<<"; i < "<<z+2<<"; i++)"<<endl;
          archivo<<"  {"<<endl;
-         cout<<"endx:"<<endx<<endl;
-         cout<<"endy:"<<endy<<endl;
          prom = llenar (inix,iniy,endx,endy);
          archivo<<"   leds"<<i<<".setPixelColor(i,"<<prom[0]<<","<<prom[1]<<","<<prom[2]<<");"<<endl;
          archivo<<"  }"<<endl;
          archivo<<"  leds"<<i<<".show();"<<endl;
-         if(endx<700)
+         if(endx<w)
          {
-             inix += 100;
-             endx += 100;
-
+           inix += w/7;
+           endx += w/7;
          }
          else
          {
@@ -147,12 +149,11 @@ int main()
 
        }
        inix = 0;
-       endx = 100;
-       if(endy<=600 and iniy <=500)
+       endx = w/7;
+       if(endy<=h and iniy <=h-(h/7))
        {
-           iniy += 100;
-           endy += 100;
-
+         iniy += h/6;
+         endy += h/6;
        }
        else
        {
