@@ -1,5 +1,4 @@
 #include "cuadrito.h"
-#include <string>
 int Cuadrito::getpos() const
 {
     return pos;

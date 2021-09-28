@@ -1,9 +1,5 @@
 #ifndef CUADRITO_H
 #define CUADRITO_H
-#include <string>
-#include <vector>
-#include <string>
-using namespace  std;
 class Cuadrito
 {
    //atributos

@@ -1,12 +1,5 @@
 #include "listacuadritos.h"
-#include <iostream>
-#include <string>
 #include <vector>
-#include <cstring>
-using std::cout;
-using std::cin;
-using std::endl;
-using std::string;
 Inventario::Inventario()
 {
 
