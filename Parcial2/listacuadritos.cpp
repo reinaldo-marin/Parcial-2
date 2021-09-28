@@ -23,23 +23,6 @@ bool Inventario::AgregarCuadrito(Cuadrito *Cuadrito)
         return false;
 }
 
-bool Inventario::EliminarCuadrito(int pos)
-{
-    int posi=-1;
-    for(unsigned i=0; i<Cuadritos.size(); i++)
-       {
-        if(Cuadritos[i]->getpos()==pos)
-            posi=i;
-    }
-    if(posi>0)
-    {
-        Cuadritos.erase(Cuadritos.begin()+posi);
-        return true;
-    }
-    else
-        return false;
-
-}
 
 Cuadrito *Inventario::BuscarCuadrito(int pos)
 {
